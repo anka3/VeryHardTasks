@@ -23,7 +23,7 @@ public class Main {
             while (reader.ready()) {              // Метод read () класса FileReader в Java считывает из файла по одному символу за раз.  Пока там все читается
                 sb.append((char)reader.read());
             }
-            fileText = sb.toString();
+            fileText = sb.toString();   //в буффер считаеывается посимвольно каждый символ из файла сыитывается в буфер а потом буфер превращаем в строку
         }
         //try потому что оно выполнит и выйдет и закончит выполнение/ и если вдруг не выполнит то покажет ошибку потому что это потенциально проблемный код (http://developer.alexanderklimov.ru/android/java/exception.php#try)
         //я сюда указываю ресурс и он после выхода из try очищает все
@@ -35,8 +35,8 @@ public class Main {
 
         BigInteger bigsum = BigInteger.ZERO;
         for(int i = 0; i < bigIntegersFromFile.size() ; i++)
-            bigsum = bigsum.add(new BigInteger(String.valueOf(bigIntegersFromFile.get(i))));
-        System.out.println("Сумма всех чисел в файле " + bigsum);
+            bigsum = bigsum.add(bigIntegersFromFile.get(i));  //в 32 строке берется текст из файла и сплитится по пробелам из этого делатестся аарей стримов стрим проходится по всем мап элементам и делает их бигинтеджерами и потом переводитэто все в лист коллекш
+        System.out.println("Сумма всех чисел в файле " + bigsum);   // лист бигнтер=еждер и я прохожу по этому листу и складываю
 
     }
 }
