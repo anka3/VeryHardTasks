@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="commons-cli-1">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../java/commons-cli-1" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="file://$PROJECT_DIR$/../java/commons-cli-1/apidocs" />
+      <root url="https://dlcdn.apache.org/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../java/commons-cli-1" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/../java/commons-cli-1" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../java/commons-cli-1" recursive="false" type="SOURCES" />
+  </library>
+</component>

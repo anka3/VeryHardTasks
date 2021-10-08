@@ -1,17 +1,32 @@
-import java.io.*;
+import org.apache.commons.cli.*;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.StreamTokenizer;
 import java.math.BigInteger;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 
 public class ReadingFile {
 
 
-    public static void main(String[] args) throws URISyntaxException {
+    public static void main(String[] args) {
 
-       File file = new File(Main.class.getResource("/NumberList").toURI());
+        List<String> lines = new ArrayList<>();
+        Path file = Paths.get("/NumberList");
+        Stream<String> lineStream = Files.lines(file, StandardCharsets.UTF_8).collect(Collectors.joining(System.lineSeparator()));
+
+    //   File file = new File(Main.class.getResource("/NumberList").toURI());
      //   FileReader file = new FileReader("NumberList");
 
 // не понимаю как относительный путь сделать нормально
@@ -20,8 +35,11 @@ public class ReadingFile {
 
         try (FileReader reader = new FileReader(file)) {
             StreamTokenizer tokenizer = new StreamTokenizer(reader); //StreamTokenizer считывает поток за символом.
-            tokenizer.nextToken();
-
+          //  tokenizer.nextToken();
+            lines = lineStream.collect(Collectors.toList());
+            String resultReadTokenizer = readTokenizer(file);
+//            while(tokenizer.nextToken()!=StreamTokenizer.TT_EOF){
+//                System.out.println(tokenizer.sval);
 
 //            for (int k = 0; k != tokenizer.TT_EOL; k++) {
 //                if (tokenizer.ttype == StreamTokenizer.TT_NUMBER) {
@@ -30,17 +48,27 @@ public class ReadingFile {
 //                }
 //            }
 
-
-
-//            throw new IOException();
+        //    throw new IOException();
             StringBuffer sb = new StringBuffer();
             while (reader.ready()) {
                 sb.append((char)reader.read());
             }
             fileText = sb.toString();
+
+            private String readTokenizer(StreamTokenizer tokenizer) {
+                try (FileReader reader = new FileReader(file)) {
+                    StreamTokenizer tokenizer = new StreamTokenizer(reader);
+                    tokenizer.nextToken();
+                    Integer token = tokenizer.nextToken();
+                    while (tokenizer.nextToken()!=StreamTokenizer.TT_EOF) {
+                        token = tokenizer.nextToken();
+                    }
+                    return token;
+                }}
         }
 
 
+// ХОЧУ ОФОРМИТЬ ТОКЕНАЙЗЕР КАК ОТДЕЛЬНУЮ ФУНКЦИЮ
 //        public static List<Object> streamTokenizerWithDefaultConfiguration(Reader reader) throws IOException {
 //            StreamTokenizer streamTokenizer = new StreamTokenizer(reader);
 //            List<Object> tokens = new ArrayList<Object>();
@@ -54,26 +82,41 @@ public class ReadingFile {
 //                        || streamTokenizer.ttype == QUOTE_CHARACTER
 //                        || streamTokenizer.ttype == DOUBLE_QUOTE_CHARACTER) {
 //                    tokens.add(streamTokenizer.sval);
-//                } else {
+//                }
+
+
 
         catch (IOException e) {
             System.out.println(e.getMessage());
             System.out.println("Не получилось сложить числа");
         }
 
-        List<BigInteger> bigIntegersFromFile = Arrays.stream(fileText.split(" "))
-                .map(BigInteger::new)
-                .collect(Collectors.toList());
 
-        BigInteger bigsum = BigInteger.ZERO;
-        for (BigInteger s : bigIntegersFromFile)
-        {
-            bigsum = bigsum.add(s);
-            System.out.println("Сумма всех чисел в файле " + bigsum);
+            List<BigInteger> bigIntegersFromFile = Arrays.stream(fileText.split(" "))
+                    .map(BigInteger::new)
+                    .collect(Collectors.toList());
+
+            BigInteger bigsum = BigInteger.ZERO;
+            for (BigInteger s : bigIntegersFromFile) {
+                bigsum = bigsum.add(s);
+                System.out.println("Сумма всех чисел в файле " + bigsum);
+            }
+
+
+            //применение библиотеки cli
+            //Apache Commons CLI предоставляет класс HelpFormatter для печати руководства по использованию аргументов командной строки. Смотрите пример.
+            Options options = new Options();
+            options.addOption("p", "print", false, "Send print request to printer.")
+                    .addOption("g", "gui", false, "Show GUI Application")
+                    .addOption("n", true, "No. of copies to print");
+
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("CLITester", options);
         }
-
     }
-}
+
+
+
 
 
 //14 строка throws IOException для функции main не имеют смысла/ лучше чтобы в коде было написано что мы  IOException обрабатываем и пишем в
@@ -117,6 +160,7 @@ public class ReadingFile {
 // параметры например чтобы вывести хелп, добавить попции в программе и одна из опций это имя файла
 //эту библиотеку надо встроить в приложение
 //подгтовить рассказ как работает почему работает и приветси пример использования пункта 1
+
 
 //1) List Map -> LinkedList ArrayList HashMap, придумать пару примеров, + TreeMap и объяснить как работает РАССКАЗ!!!!
 
