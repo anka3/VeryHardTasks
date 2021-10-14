@@ -1,42 +1,161 @@
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.math.BigInteger;
+import java.io.*;
+import java.net.URI;
+
+import org.apache.commons.cli.*;
 import java.net.URISyntaxException;
-import java.util.Arrays;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Scanner;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 
 
 public class Main {
+    public static void main(String[] args) throws IOException {
+        //https://urvanov.ru/2019/06/08/apache-commons-cli/
+        Options option = new Options();
+        option.addRequiredOption("P", "path",
+                true, "Path");
 
-    public static void main(String[] args) throws IOException, URISyntaxException {
+        CommandLineParser parser = new DefaultParser();
+        CommandLine cmd = null;
 
-        File file = new File(Main.class.getResource("/int").toURI());
-        //getResource() отправляет запрос к загрузчику классов, который и ищет в CLASSPATH
-        //toUri https://www.tutorialspoint.com/java/io/file_uri.html
-
-        String fileText = "";
-        try (FileReader reader = new FileReader(file)) {   //FileReader в Java - это класс, который мы используем для чтения данных из файла. Возвращает строковое представление файлового объекта
-            StringBuffer sb = new StringBuffer();      //String простой еще не могла использовать потому что иначе не будет доступен append  Для работы с текстовыми данными в Java есть три класса: String, StringBuffer и StringBuilder. Чтобы справиться с созданием временного мусора из-за модификаций объекта String, можно использовать класс StringBuffer.   https://javarush.ru/groups/posts/2351-znakomstvo-so-string-stringbuffer-i-stringbuilder-v-java
-            while (reader.ready()) {              // Метод read () класса FileReader в Java считывает из файла по одному символу за раз.  Пока там все читается
-                sb.append((char)reader.read());
-            }
-            fileText = sb.toString();   //в буффер считаеывается посимвольно каждый символ из файла сыитывается в буфер а потом буфер превращаем в строку
+        try {
+            cmd = parser.parse(option, args);
+        } catch (ParseException pe) {
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp( " Введите путь", option );
         }
-        //try потому что оно выполнит и выйдет и закончит выполнение/ и если вдруг не выполнит то покажет ошибку потому что это потенциально проблемный код (http://developer.alexanderklimov.ru/android/java/exception.php#try)
-        //я сюда указываю ресурс и он после выхода из try очищает все
-//шото я хз надо ли сюда catch
 
-        List<BigInteger> bigIntegersFromFile = Arrays.stream(fileText.split(" "))
-                .map(BigInteger::new)    //https://annimon.com/article/2778
-                .collect(Collectors.toList());
+        if (cmd.hasOption("P")) {
+            System.out.println("Путь введен");
+            String getPath = cmd.getOptionValue("P");
+            FileReader file = new FileReader(getPath);
+          //  Path file = Paths.get(getPath);
+          //  Stream<String> lineStream = Files.lines(file, StandardCharsets.UTF_8).collect(Collectors.joining(System.lineSeparator()));
+            StreamTokenizer streamTokenizer = new StreamTokenizer(file);
 
-        BigInteger bigsum = BigInteger.ZERO;
-        for(int i = 0; i < bigIntegersFromFile.size() ; i++)
-            bigsum = bigsum.add(bigIntegersFromFile.get(i));  //в 32 строке берется текст из файла и сплитится по пробелам из этого делатестся аарей стримов стрим проходится по всем мап элементам и делает их бигинтеджерами и потом переводитэто все в лист коллекш
-        System.out.println("Сумма всех чисел в файле " + bigsum);   // лист бигнтер=еждер и я прохожу по этому листу и складываю
+
+            System.out.println(TokenizerFile.readTokenizer(streamTokenizer));
+
+        }
+        else {
+            System.out.println("Ошибка");
+
+        }
+
+
+
+//        //получаем инпут с консоли
+//        Scanner in = new Scanner(System.in);
+//        System.out.println("Путь скопирован " + in);
+//        String s = in.nextLine();
+
+
+    //    FileReader file = new FileReader();
+      //    StreamTokenizer streamTokenizer = new StreamTokenizer(file);
+
+      //  System.out.println(TokenizerFile.readTokenizer(streamTokenizer));
 
     }
+
+
 }
+
+
+
+
+
+
+
+
+
+    //    File file = new File(Main.class.getResource("path").toURI());
+ //!!!   FileReader file = new FileReader("P");
+
+
+    //   List<String> lines = new ArrayList<>();
+    //  Path file = Paths.get("/Users/annasotnicenko/HardTasks/src/main/resources/NumberList");
+    //  String lineStream = Files.lines(file, StandardCharsets.UTF_8).collect(Collectors.joining(System.lineSeparator()));
+    //  String fileText = "";
+
+    //    FileReader reader = new FileReader(lineStream);
+ // !!!  StreamTokenizer streamTokenizer = new StreamTokenizer(file);
+//  TokenizerFile fileReadTokenizer = new TokenizerFile(file);
+
+  //!!!      System.out.println(TokenizerFile.readTokenizer(streamTokenizer));
+
+//  System.out.println("Сумма всех чисел в файле " + fileReadTokenizer);
+
+
+
+
+
+
+
+
+
+//            List<Object> tokens = new ArrayList<Object>();
+//
+//            int currentToken = streamTokenizer.nextToken();
+//            while (currentToken != StreamTokenizer.TT_EOF) {
+//
+//        String fileText = "";
+//        try (FileReader reader = new FileReader(file)) {
+//            StringBuffer sb = new StringBuffer();
+//            while (reader.ready()) {
+//                sb.append((char)reader.read());
+//            }
+//            fileText = sb.toString();
+//
+//        List<BigInteger> bigIntegersFromFile = Arrays.stream(fileText.split(" "))
+//                .map(BigInteger::new)
+//                .collect(Collectors.toList());
+//
+//        BigInteger bigsum = BigInteger.ZERO;
+//        for(int i = 0; i < bigIntegersFromFile.size() ; i++)
+//            bigsum = bigsum.add(bigIntegersFromFile.get(i));
+
+
+
+
+//14 строка throws IOException для функции main не имеют смысла/ лучше чтобы в коде было написано что мы  IOException обрабатываем и пишем в
+// лог такую проблему и если я оставлю как у меня есть то у меня будет кусок данных из джава машины где буде написано что случилось
+
+//название файла переименовать инт
+
+//16 строка "/NumberList" лучше писать или относительный или абсолютный. у меня абсолютный путь. это опасно потому что при переименовании директории будет
+
+
+//надо почитать как выглядть структуры данных
+//arraylist linkedlist hashmap hashteble
+ //  в этой стриме создается аррей лист и там применяются к нему стримы и можно было
+//в стрим есть один из механизмов получения стримапи джава - этот файл мы могли считать с помощью стримапиджава
+
+
+//вместо 37 строки forEach она может просто проводиь сравнение с двумя числами/ брать одно значение и предыдущее значение и проводить операции и необязательно делать второй цикл
+//for (type itVar : array)
+//{
+//    Блок операторов;
+//}
+// у нас есть итератор по самому обьекту коллекции и мы просто берем следующий и следующий и добавляем к нему какие-то действия
+//
+
+//бигинтеджер выделяются на стеке и такие числа бигинтеджер и бигдецимал они представляют обьекты памяти это обьем памяти где я могу хранить число/ проблема простых чисел в том что когда они переполняются и возникают ошибки переполнения и они переходят в следующее число/ и вместо 9.99  млрд + 1 в простых числах будет 0 //
+// бигдецимл - запрещено использовтаь дабл, невозможно представить дробное число с максимальной точностью - из-за того что мы используем числа в  которых числа флот и дабл это примитывы с огрниченным размером и мы получаем ограниченную точность
+//https://habr.com/ru/company/luxoft/blog/270383/
+//https://habr.com/ru/post/219595/ - об опансности исползования расчета максимальных обьектов/ ошибки округления постоянно происходят - самое простое это считать в центах и копейках
+
+// 20 строка - я считываю туда сразу весь файл - это проблема/ я из этого файла прочитала числа - и получается что памяти в два раза больше израсходовалось
+//у меня есть 2 массива - один со строками а потмо с числами
+//надо считать файл просто по кусочкам. надо считывать даже не строку а символ
+//считала - обработала и пошла дальше. для этого в java есть другой класс называется StreamTokenizer - он считывает значения из файла по порядку/ считала оддно значение - обработала
+
+//когда в команду пишут обычно они используют библиотеку где есть обработка ситуаций типа под каким ключем задвать различные параметры например чтобы вывести хелп, добавить попции в программе и одна из опций это имя файла
+//эту библиотеку надо встроить в приложение
+//подгтовить рассказ как работает почему работает и приветси пример использования пункта 1

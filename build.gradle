@@ -12,11 +12,11 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-   // implementation group: 'org.apache.commons.cli', name: 'commons-cli-1', version: '1.4'
-    implementation 'org.apache.commons:commons-cli-1:1.4'
- //   compile group: "org.apache.commons.cli", name: 'commons-cli-1', version: "1.4"
+    implementation group: 'commons-cli', name: 'commons-cli', version: '1.4'
 
 }
+
+
 
 test {
     useJUnitPlatform()

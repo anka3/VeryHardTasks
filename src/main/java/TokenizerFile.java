@@ -1,124 +1,28 @@
-import org.apache.commons.cli.*;
-
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.math.BigInteger;
-import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
-public class ReadingFile {
+public class TokenizerFile {
 
+    public static boolean readTokenizer(StreamTokenizer tokenizer) throws IOException {
+        BigInteger bigsum = BigInteger.ZERO;
+            while (tokenizer.nextToken() != StreamTokenizer.TT_EOF) {
+                if (tokenizer.ttype == StreamTokenizer.TT_NUMBER) {
+                    bigsum = bigsum.add(new BigInteger(tokenizer.sval));
 
-    public static void main(String[] args) {
-
-        List<String> lines = new ArrayList<>();
-        Path file = Paths.get("/NumberList");
-        Stream<String> lineStream = Files.lines(file, StandardCharsets.UTF_8).collect(Collectors.joining(System.lineSeparator()));
-
-    //   File file = new File(Main.class.getResource("/NumberList").toURI());
-     //   FileReader file = new FileReader("NumberList");
-
-// не понимаю как относительный путь сделать нормально
-
-        String fileText = "";
-
-        try (FileReader reader = new FileReader(file)) {
-            StreamTokenizer tokenizer = new StreamTokenizer(reader); //StreamTokenizer считывает поток за символом.
-          //  tokenizer.nextToken();
-            lines = lineStream.collect(Collectors.toList());
-            String resultReadTokenizer = readTokenizer(file);
-//            while(tokenizer.nextToken()!=StreamTokenizer.TT_EOF){
-//                System.out.println(tokenizer.sval);
-
-//            for (int k = 0; k != tokenizer.TT_EOL; k++) {
-//                if (tokenizer.ttype == StreamTokenizer.TT_NUMBER) {
-//                    System.out.println(i);
-//                    array[i++] = (int) tokenizer.nval;
-//                }
-//            }
-
-        //    throw new IOException();
-            StringBuffer sb = new StringBuffer();
-            while (reader.ready()) {
-                sb.append((char)reader.read());
+                }
             }
-            fileText = sb.toString();
+            System.out.println("Сумма всех чисел в файле " + bigsum);
 
-            private String readTokenizer(StreamTokenizer tokenizer) {
-                try (FileReader reader = new FileReader(file)) {
-                    StreamTokenizer tokenizer = new StreamTokenizer(reader);
-                    tokenizer.nextToken();
-                    Integer token = tokenizer.nextToken();
-                    while (tokenizer.nextToken()!=StreamTokenizer.TT_EOF) {
-                        token = tokenizer.nextToken();
-                    }
-                    return token;
-                }}
-        }
-
-
-// ХОЧУ ОФОРМИТЬ ТОКЕНАЙЗЕР КАК ОТДЕЛЬНУЮ ФУНКЦИЮ
-//        public static List<Object> streamTokenizerWithDefaultConfiguration(Reader reader) throws IOException {
-//            StreamTokenizer streamTokenizer = new StreamTokenizer(reader);
-//            List<Object> tokens = new ArrayList<Object>();
-//
-//            int currentToken = streamTokenizer.nextToken();
-//            while (currentToken != StreamTokenizer.TT_EOF) {
-//
-//                if (streamTokenizer.ttype == StreamTokenizer.TT_NUMBER) {
-//                    tokens.add(streamTokenizer.nval);
-//                } else if (streamTokenizer.ttype == StreamTokenizer.TT_WORD
-//                        || streamTokenizer.ttype == QUOTE_CHARACTER
-//                        || streamTokenizer.ttype == DOUBLE_QUOTE_CHARACTER) {
-//                    tokens.add(streamTokenizer.sval);
-//                }
-
-
-
-        catch (IOException e) {
-            System.out.println(e.getMessage());
-            System.out.println("Не получилось сложить числа");
-        }
-
-
-            List<BigInteger> bigIntegersFromFile = Arrays.stream(fileText.split(" "))
-                    .map(BigInteger::new)
-                    .collect(Collectors.toList());
-
-            BigInteger bigsum = BigInteger.ZERO;
-            for (BigInteger s : bigIntegersFromFile) {
-                bigsum = bigsum.add(s);
-                System.out.println("Сумма всех чисел в файле " + bigsum);
-            }
-
-
-            //применение библиотеки cli
-            //Apache Commons CLI предоставляет класс HelpFormatter для печати руководства по использованию аргументов командной строки. Смотрите пример.
-            Options options = new Options();
-            options.addOption("p", "print", false, "Send print request to printer.")
-                    .addOption("g", "gui", false, "Show GUI Application")
-                    .addOption("n", true, "No. of copies to print");
-
-            HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp("CLITester", options);
-        }
+        return false;
     }
+}
 
+//10102021
+//в другой функции менй у меня будет создание токенайзера и мы передеаем его в вфункцю ридтокенайзер (вызывывая ридтокенайзер)
 
-
-
-
+//__________________________________________________________________________
 //14 строка throws IOException для функции main не имеют смысла/ лучше чтобы в коде было написано что мы  IOException обрабатываем и пишем в
 // лог такую проблему и если я оставлю как у меня есть то у меня будет кусок данных из джава машины где буде написано что случилось
 //готово
@@ -163,7 +67,54 @@ public class ReadingFile {
 
 
 //1) List Map -> LinkedList ArrayList HashMap, придумать пару примеров, + TreeMap и объяснить как работает РАССКАЗ!!!!
+//Stream API  - новый способ взаимодействия с данными, представляя их в виде конечного потока данных.
+//  - map — прибавляет число к каждому числу например  .map(x -> x + 11)
 
+//toCollection(Supplier collectionFactory)
+//Собирает элементы в заданную коллекцию. Если нужно конкретно указать, какой List, Set или другую коллекцию мы хотим использовать, то этот метод поможет.
+//например Deque<Integer> deque = Stream.of(1, 2, 3, 4, 5)
+//    .collect(Collectors.toCollection(ArrayDeque::new));
+//
+//Set<Integer> set = Stream.of(1, 2, 3, 4, 5)
+//    .collect(Collectors.toCollection(LinkedHashSet::new));
+
+//Пример   HashMap  Дан массив аргументов. Нужно получить Map, где каждому ключу будет соответствовать своё значение.
+//String[] arguments = {"-i", "in.txt", "--limit", "40", "-d", "1", "-o", "out.txt"};
+//Map<String, String> argsMap = new LinkedHashMap<>(arguments.length / 2);
+//for (int i = 0; i < arguments.length; i += 2) {
+//    argsMap.put(arguments[i], arguments[i + 1]);
+//}
+//argsMap.forEach((key, value) -> System.out.format("%s: %s%n", key, value));
+//
+
+//  Пример ArrayList
+//дан список студентов
+//List<Student> students = Arrays.asList(
+//        new Student("Alex", Speciality.Physics, 1),
+//        new Student("Rika", Speciality.Biology, 4),
+//        new Student("Julia", Speciality.Biology, 2),
+//        new Student("Steve", Speciality.History, 4),
+//
+//);
+//
+//enum Speciality {
+//    Biology, ComputerScience, Economics, Finance,
+//    History, Philosophy, Physics, Psychology
+//}
+//
+//    У класса Student реализованы все геттеры и сеттеры, toString и equals+hashCode.
+//
+//        Нужно сгруппировать всех студентов по курсу.
+//        students.stream()
+//        .collect(Collectors.groupingBy(Student::getYear))
+//        .entrySet().forEach(System.out::println);
+// 1=[Alex: Physics 1, Mike: Finance 1, Richard: History 1, Ann: Psychology 1]
+// 2=[Julia: Biology 2, Hinata: Biology 2, Kate: Psychology 2]
+// 3=[Maximilian: ComputerScience 3]
+// 4=[Rika: Biology 4, Steve: History 4, Sergey: ComputerScience 4]
+// 5=[Tim: ComputerScience 5]
+
+//stream api преобразование в tree map https://coderoad.ru/35116264/Java-8-Stream-API-toMap-%D0%BF%D1%80%D0%B5%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B2-TreeMap
 
 //1.1) toString() hashCode() equals()
 
@@ -173,3 +124,17 @@ public class ReadingFile {
 //https://www.frolov-lib.ru/books/bsp/v32/ch2_11.htm
 
 //4) Найти библиотеку для работы с аргументами командной строки и встроить ее в приложение
+
+
+
+//    public static void main(String[] args) {
+//
+//        List<String> lines = new ArrayList<>();
+//        Path file = Paths.get("/NumberList");
+//        Stream<String> lineStream = Files.lines(file, StandardCharsets.UTF_8).collect(Collectors.joining(System.lineSeparator()));
+//        String fileText = "";
+//
+//        try (FileReader reader = new FileReader(file)) {
+//            StreamTokenizer tokenizer = new StreamTokenizer(reader);
+//
+//        }
