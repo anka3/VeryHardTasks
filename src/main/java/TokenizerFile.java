@@ -1,21 +1,21 @@
 import java.io.IOException;
 import java.io.StreamTokenizer;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 
 public class TokenizerFile {
 
     public static boolean readTokenizer(StreamTokenizer tokenizer) throws IOException {
-        BigInteger bigsum = BigInteger.ZERO;
+        BigDecimal bigsum = BigDecimal.ZERO;
             while (tokenizer.nextToken() != StreamTokenizer.TT_EOF) {
                 if (tokenizer.ttype == StreamTokenizer.TT_NUMBER) {
-                    bigsum = bigsum.add(new BigInteger(tokenizer.sval));
-
+                    bigsum = bigsum.add(new BigDecimal(tokenizer.nval));
                 }
             }
             System.out.println("Сумма всех чисел в файле " + bigsum);
 
-        return false;
+        return true;
     }
 }
 
@@ -125,16 +125,3 @@ public class TokenizerFile {
 
 //4) Найти библиотеку для работы с аргументами командной строки и встроить ее в приложение
 
-
-
-//    public static void main(String[] args) {
-//
-//        List<String> lines = new ArrayList<>();
-//        Path file = Paths.get("/NumberList");
-//        Stream<String> lineStream = Files.lines(file, StandardCharsets.UTF_8).collect(Collectors.joining(System.lineSeparator()));
-//        String fileText = "";
-//
-//        try (FileReader reader = new FileReader(file)) {
-//            StreamTokenizer tokenizer = new StreamTokenizer(reader);
-//
-//        }

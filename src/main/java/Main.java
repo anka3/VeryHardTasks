@@ -36,8 +36,6 @@ public class Main {
             System.out.println("Путь введен");
             String getPath = cmd.getOptionValue("P");
             FileReader file = new FileReader(getPath);
-          //  Path file = Paths.get(getPath);
-          //  Stream<String> lineStream = Files.lines(file, StandardCharsets.UTF_8).collect(Collectors.joining(System.lineSeparator()));
             StreamTokenizer streamTokenizer = new StreamTokenizer(file);
 
 
@@ -49,79 +47,8 @@ public class Main {
 
         }
 
-
-
-//        //получаем инпут с консоли
-//        Scanner in = new Scanner(System.in);
-//        System.out.println("Путь скопирован " + in);
-//        String s = in.nextLine();
-
-
-    //    FileReader file = new FileReader();
-      //    StreamTokenizer streamTokenizer = new StreamTokenizer(file);
-
-      //  System.out.println(TokenizerFile.readTokenizer(streamTokenizer));
-
     }
-
-
 }
-
-
-
-
-
-
-
-
-
-    //    File file = new File(Main.class.getResource("path").toURI());
- //!!!   FileReader file = new FileReader("P");
-
-
-    //   List<String> lines = new ArrayList<>();
-    //  Path file = Paths.get("/Users/annasotnicenko/HardTasks/src/main/resources/NumberList");
-    //  String lineStream = Files.lines(file, StandardCharsets.UTF_8).collect(Collectors.joining(System.lineSeparator()));
-    //  String fileText = "";
-
-    //    FileReader reader = new FileReader(lineStream);
- // !!!  StreamTokenizer streamTokenizer = new StreamTokenizer(file);
-//  TokenizerFile fileReadTokenizer = new TokenizerFile(file);
-
-  //!!!      System.out.println(TokenizerFile.readTokenizer(streamTokenizer));
-
-//  System.out.println("Сумма всех чисел в файле " + fileReadTokenizer);
-
-
-
-
-
-
-
-
-
-//            List<Object> tokens = new ArrayList<Object>();
-//
-//            int currentToken = streamTokenizer.nextToken();
-//            while (currentToken != StreamTokenizer.TT_EOF) {
-//
-//        String fileText = "";
-//        try (FileReader reader = new FileReader(file)) {
-//            StringBuffer sb = new StringBuffer();
-//            while (reader.ready()) {
-//                sb.append((char)reader.read());
-//            }
-//            fileText = sb.toString();
-//
-//        List<BigInteger> bigIntegersFromFile = Arrays.stream(fileText.split(" "))
-//                .map(BigInteger::new)
-//                .collect(Collectors.toList());
-//
-//        BigInteger bigsum = BigInteger.ZERO;
-//        for(int i = 0; i < bigIntegersFromFile.size() ; i++)
-//            bigsum = bigsum.add(bigIntegersFromFile.get(i));
-
-
 
 
 //14 строка throws IOException для функции main не имеют смысла/ лучше чтобы в коде было написано что мы  IOException обрабатываем и пишем в
